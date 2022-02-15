@@ -131,25 +131,6 @@ int get2ret(vector<vector<int>> &sum, int l, int r, int t, int d) {
   return sum[d + 1][r + 1] - sum[d + 1][l] - sum[t][r + 1] + sum[t][r];
 }
 
-//最长递增子序列 O(n*log(n))解法
-vector<int> kIncreasing(vector<int> &arr) {
-  int n = static_cast<int>(arr.size());
-
-  vector<int> f;
-  int length = 0;
-  for (int j = 0; j < n; j++) {
-    ++length;
-    auto it = upper_bound(f.begin(), f.end(), arr[j]);
-    if (it == f.end()) {
-      f.push_back(arr[j]);
-    } else {
-      *it = arr[j];
-    }
-  }
-  return f;
-}
-
-
 //有向图的hamilton路径
 //输入为每个有向边
 vector<int> HamiltonPath(vector<vector<int>> &pairs, int n) {
@@ -245,16 +226,86 @@ int dir[4] = { -1,-1,1,1 };
 //int dir[4][2] = {{-1, 0}, {0, -1}, {0, 1}, {1, 0}};
 //int dir[9][2] = { {-1,-1}, {-1,0},{-1,1}, {0,-1},{0,0}, {0,1},{1,-1},{1,0},{1,1} };
 //int dir[9] = { -1,0,1, -1,0, 1,-1,0,1 };
-
+/*
+const int N=510;
+class Solution {
+ public:
+  int cnts[N],fa[N];
+  bool g[N][N];
+  int checkWays(vector<vector<int>>& pairs) {
+    int m=pairs.size();
+    set<int>set_;
+    for(auto p:pairs){
+      int a=p[0],b=p[1];
+      g[a][b]=g[b][a]=true;
+      cnts[a]++,cnts[b]++;
+      set_.insert(a),set_.insert(b);
+    }
+    vector<int>list;
+    for(auto x:set_)list.push_back(x);
+    int n=list.size(),root=list[0];
+    if(m<n-1)return 0;
+    fa[root]=-1;
+    for(int i=1;i<n;++i){
+      int a=list[i];
+      bool ok=false;
+      for(int j=i-1;j>=0&&!ok;--j){
+        int b=list[j];
+        if(g[a][b]){
+          fa[a]=b;
+          ok=true;
+        }
+      }
+      if(!ok)return 0;
+    }
+    int c=0,ans=1;
+    for(auto i:set_){
+      int j=i;
+      while(fa[j]!=-1){
+        if(!g[i][fa[j]])return 0;
+        if(cnts[i]==cnts[fa[j]])ans=2;
+        ++c;
+        j=fa[j];
+      }
+    }
+    return c<m?0:ans;
+  }
+};*/
 
 class Solution {
  public:
-  int minSwap(vector<int>& nums1, vector<int>& nums2) {
-    int n=0,s=1;
-    F(i,1,nums1.size())n=max(nums1[i-1],nums2[i-1])<min(nums1[i],nums2[i])?s=min(n,s)+1,s-1:(nums1[i-1]-nums2[i-1])*(nums1[i]-nums2[i])<0?n=n^s,s=s^n,n^s:s+=1,n;
-    return min(n,s);
+  void getsums(vector<int>&nums,int idx,int cur,unordered_map<int,int>&ret){
+    if(idx>=nums.size())return;
+    ret[cur+nums[idx]]++;
+    getsums(nums,idx+1,cur,ret);
+    getsums(nums,idx+1,cur+nums[idx],ret);
+  }
+  bool splitArraySameAverage(vector<int>& nums) {
+    if(nums.size()<2)return false;
+    int sum= accumulate(nums.begin(),nums.end(),0);
+    vector<int>t1,t2;
+    int n=nums.size(),idx=0;
+    for(;idx<n/2;++idx)t1.push_back(nums[idx]*n-sum);
+    for(;idx<n;++idx)t2.push_back(nums[idx]*n-sum);
+    unordered_map<int,int>s1,s2;
+    getsums(t1,0,0,s1);
+    getsums(t2,0,0,s2);
+    DBG(t1,t2);
+    int sum1=accumulate(t1.begin(),t1.end(),0);
+    int sum2=accumulate(t2.begin(),t2.end(),0);
+    if(s1.count(0)||s2.count(0))return true;
+    for(auto x:s1){
+      if(s2.count(x.first*(-1))){
+        if(sum1==x.first&&x.second==1&&sum2==x.first*(-1)&&s2[x.first*(-1)]==1)continue;
+        return true;
+      }
+
+      //if(s2.count(-x))return true;
+    }
+    return false;
   }
 };
+
 
 #ifdef LOCAL
 signed main() {
