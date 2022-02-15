@@ -212,29 +212,6 @@ void fillArrayWithVector(int *after, const vector<vector<int>> &grid, int barrie
   for (int i = 0; i < n2; ++i) after[++cnt] = barrier;
 }
 
-LL MOD(LL a, LL m) {
-  a %= m;
-  if (a < 0)a += m;
-  return a;
-}
-
-LL inverse(LL a, LL m) {
-  a = MOD(a, m);
-  if (a <= 1)return a;
-  return MOD((1 - inverse(m, a) * m) / a, m);
-}
-
-LL fast(LL a, LL b, LL mod) {
-  a %= mod;
-  if (b < 0)a = inverse(a, mod), b = -b;
-  LL ans = 1;
-  while (b) {
-    if (b & 1)ans = ans * a % mod;
-    a = a * a % mod;
-    b /= 2;
-  }
-  return ans % mod;
-}
 
 //求最大公约数
 int GCD(int x, int y) {
@@ -281,7 +258,6 @@ class Solution {
 
 #ifdef LOCAL
 signed main() {
-
 
   //vector<VI>lamps = { {2,0},{1,2} };
   //vector<VI>queries = { {2,3},{0,3} };
