@@ -131,25 +131,6 @@ int get2ret(vector<vector<int>> &sum, int l, int r, int t, int d) {
   return sum[d + 1][r + 1] - sum[d + 1][l] - sum[t][r + 1] + sum[t][r];
 }
 
-//最长递增子序列 O(n*log(n))解法
-vector<int> kIncreasing(vector<int> &arr) {
-  int n = static_cast<int>(arr.size());
-
-  vector<int> f;
-  int length = 0;
-  for (int j = 0; j < n; j++) {
-    ++length;
-    auto it = upper_bound(f.begin(), f.end(), arr[j]);
-    if (it == f.end()) {
-      f.push_back(arr[j]);
-    } else {
-      *it = arr[j];
-    }
-  }
-  return f;
-}
-
-
 //有向图的hamilton路径
 //输入为每个有向边
 vector<int> HamiltonPath(vector<vector<int>> &pairs, int n) {
