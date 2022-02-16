@@ -226,51 +226,7 @@ int dir[4] = { -1,-1,1,1 };
 //int dir[4][2] = {{-1, 0}, {0, -1}, {0, 1}, {1, 0}};
 //int dir[9][2] = { {-1,-1}, {-1,0},{-1,1}, {0,-1},{0,0}, {0,1},{1,-1},{1,0},{1,1} };
 //int dir[9] = { -1,0,1, -1,0, 1,-1,0,1 };
-/*
-const int N=510;
-class Solution {
- public:
-  int cnts[N],fa[N];
-  bool g[N][N];
-  int checkWays(vector<vector<int>>& pairs) {
-    int m=pairs.size();
-    set<int>set_;
-    for(auto p:pairs){
-      int a=p[0],b=p[1];
-      g[a][b]=g[b][a]=true;
-      cnts[a]++,cnts[b]++;
-      set_.insert(a),set_.insert(b);
-    }
-    vector<int>list;
-    for(auto x:set_)list.push_back(x);
-    int n=list.size(),root=list[0];
-    if(m<n-1)return 0;
-    fa[root]=-1;
-    for(int i=1;i<n;++i){
-      int a=list[i];
-      bool ok=false;
-      for(int j=i-1;j>=0&&!ok;--j){
-        int b=list[j];
-        if(g[a][b]){
-          fa[a]=b;
-          ok=true;
-        }
-      }
-      if(!ok)return 0;
-    }
-    int c=0,ans=1;
-    for(auto i:set_){
-      int j=i;
-      while(fa[j]!=-1){
-        if(!g[i][fa[j]])return 0;
-        if(cnts[i]==cnts[fa[j]])ans=2;
-        ++c;
-        j=fa[j];
-      }
-    }
-    return c<m?0:ans;
-  }
-};*/
+
 
 class Solution {
  public:
