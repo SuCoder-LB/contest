@@ -175,9 +175,6 @@ vector<int> HamiltonPath(vector<vector<int>> &pairs, int n) {
   return ans;
 }
 
-
-
-
 //降维加速，barrier为周围四边的填充
 void fillArrayWithVector(int *after, const vector<vector<int>> &grid, int barrier = 0) {
   int m = static_cast<int>(grid.size());
@@ -193,18 +190,6 @@ void fillArrayWithVector(int *after, const vector<vector<int>> &grid, int barrie
   for (int i = 0; i < n2; ++i) after[++cnt] = barrier;
 }
 
-
-//求最大公约数
-int GCD(int x, int y) {
-  if (x == y)return x;
-  if (x < y)swap(x, y);
-  return GCD(y, x - y);
-}
-
-//最小公倍数
-int MCM(int x, int y) {
-  return x * y / GCD(x, y);
-}
 
 //以c划分字符串
 std::vector<std::string> SplitStringWith(const std::string &s, char c) {
@@ -228,44 +213,33 @@ int dir[4] = { -1,-1,1,1 };
 //int dir[9] = { -1,0,1, -1,0, 1,-1,0,1 };
 
 
+#include "min_cost_max_flow.h"
+
 class Solution {
  public:
-  void getsums(vector<int>&nums,int idx,int cur,unordered_map<int,int>&ret){
-    if(idx>=nums.size())return;
-    ret[cur+nums[idx]]++;
-    getsums(nums,idx+1,cur,ret);
-    getsums(nums,idx+1,cur+nums[idx],ret);
-  }
-  bool splitArraySameAverage(vector<int>& nums) {
-    if(nums.size()<2)return false;
-    int sum= accumulate(nums.begin(),nums.end(),0);
-    vector<int>t1,t2;
-    int n=nums.size(),idx=0;
-    for(;idx<n/2;++idx)t1.push_back(nums[idx]*n-sum);
-    for(;idx<n;++idx)t2.push_back(nums[idx]*n-sum);
-    unordered_map<int,int>s1,s2;
-    getsums(t1,0,0,s1);
-    getsums(t2,0,0,s2);
-    DBG(t1,t2);
-    int sum1=accumulate(t1.begin(),t1.end(),0);
-    int sum2=accumulate(t2.begin(),t2.end(),0);
-    if(s1.count(0)||s2.count(0))return true;
-    for(auto x:s1){
-      if(s2.count(x.first*(-1))){
-        if(sum1==x.first&&x.second==1&&sum2==x.first*(-1)&&s2[x.first*(-1)]==1)continue;
-        return true;
+  int maximumANDSum(vector<int>& nums, int numSlots) {
+    int n = nums.size();
+    int m = numSlots;
+    MinCostMaxFlow mcmf(n + m + 2);
+    int s = n + m, t = s + 1;
+    //F(i,0,n+m+2)mcmf.setpi(i);
+    F(i, 0, n){
+      mcmf.addEdge(s, i, 1, 0);
+      F(j, 0, m) {
+        mcmf.addEdge(i, j + n, 1, -(nums[i] & (j + 1)));
       }
-
-      //if(s2.count(-x))return true;
     }
-    return false;
+    F(i, 0, m) {
+      mcmf.addEdge(i + n, t, 2, 0);
+    }
+    mcmf.setpi(s);
+    return -(mcmf.maxflow(s, t))[1];
   }
 };
 
 
 #ifdef LOCAL
 signed main() {
-
   //vector<VI>lamps = { {2,0},{1,2} };
   //vector<VI>queries = { {2,3},{0,3} };
   //vector<VI>grid ={ {0, 1, 0, 0, 0, 0, 0, 1},{0, 1, 0, 0, 0, 0, 0, 1},{0, 0, 0, 0, 0, 0, 0, 1},{0, 0, 0, 0, 0, 0, 0, 0} };
