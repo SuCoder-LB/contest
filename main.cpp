@@ -5,6 +5,7 @@
 using namespace std;
 
 using VI = vector<int>;
+using PII=pair<int,int>;
 using vec2 = array<double, 2>;
 using vec3 = array<double, 3>;
 using LL = long long;
