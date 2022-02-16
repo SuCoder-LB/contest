@@ -5,6 +5,10 @@
 #ifndef CONTEST__EUCLID_H_
 #define CONTEST__EUCLID_H_
 
+#include<bits/stdc++.h>
+
+using namespace std;
+
 long long GreatestCommonDivisor(long long a, long long b) { return __gcd(a, b); }
 
 //return ax+by=d=gcd(a,b)
