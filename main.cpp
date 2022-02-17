@@ -214,30 +214,6 @@ int dir[4] = { -1,-1,1,1 };
 //int dir[9] = { -1,0,1, -1,0, 1,-1,0,1 };
 
 
-#include "min_cost_max_flow.h"
-
-class Solution {
- public:
-  int maximumANDSum(vector<int>& nums, int numSlots) {
-    int n = nums.size();
-    int m = numSlots;
-    MinCostMaxFlow mcmf(n + m + 2);
-    int s = n + m, t = s + 1;
-    //F(i,0,n+m+2)mcmf.setpi(i);
-    F(i, 0, n){
-      mcmf.addEdge(s, i, 1, 0);
-      F(j, 0, m) {
-        mcmf.addEdge(i, j + n, 1, -(nums[i] & (j + 1)));
-      }
-    }
-    F(i, 0, m) {
-      mcmf.addEdge(i + n, t, 2, 0);
-    }
-    mcmf.setpi(s);
-    return -(mcmf.maxflow(s, t))[1];
-  }
-};
-
 
 #ifdef LOCAL
 signed main() {
