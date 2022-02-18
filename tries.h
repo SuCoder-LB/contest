@@ -5,7 +5,7 @@
 #ifndef CONTEST__TRIES_H_
 #define CONTEST__TRIES_H_
 
-#include <bits\stdc++.h>
+#include <bits/stdc++.h>
 
 using namespace std;
 

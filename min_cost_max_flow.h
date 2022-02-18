@@ -5,7 +5,7 @@
 #ifndef CONTEST__MIN_COST_MAX_FLOW_H_
 #define CONTEST__MIN_COST_MAX_FLOW_H_
 
-#include <bits\stdc++.h>
+#include <bits/stdc++.h>
 
 using namespace std;
 

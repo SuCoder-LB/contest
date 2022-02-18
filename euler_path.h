@@ -5,7 +5,7 @@
 #ifndef CONTEST__EULER_PATH_H_
 #define CONTEST__EULER_PATH_H_
 
-#include <bits\stdc++.h>
+#include <bits/stdc++.h>
 
 using namespace std;
 

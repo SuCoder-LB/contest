@@ -5,7 +5,7 @@
 #ifndef CONTEST__HASHING_H_
 #define CONTEST__HASHING_H_
 
-#include <bits\stdc++.h>
+#include <bits/stdc++.h>
 
 using namespace std;
 

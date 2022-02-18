@@ -4,7 +4,7 @@
 
 #ifndef CONTEST__UNION_FIND_H_
 #define CONTEST__UNION_FIND_H_
-#include <bits\stdc++.h>
+#include <bits/stdc++.h>
 
 using namespace std;
 

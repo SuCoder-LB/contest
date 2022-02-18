@@ -4,7 +4,7 @@
 
 #ifndef CONTEST__MODULAR_POW_H_
 #define CONTEST__MODULAR_POW_H_
-#include <bits\stdc++.h>
+#include <bits/stdc++.h>
 
 using namespace std;
 

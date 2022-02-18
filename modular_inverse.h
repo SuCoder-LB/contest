@@ -4,7 +4,7 @@
 
 #ifndef CONTEST__MODULAR_INVERSE_H_
 #define CONTEST__MODULAR_INVERSE_H_
-#include <bits\stdc++.h>
+#include <bits/stdc++.h>
 
 using namespace std;
 

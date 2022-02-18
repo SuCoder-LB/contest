@@ -5,7 +5,7 @@
 #ifndef CONTEST__LONGEST_INCREASING_SUBSEQUENCE_H_
 #define CONTEST__LONGEST_INCREASING_SUBSEQUENCE_H_
 
-#include <bits\stdc++.h>
+#include <bits/stdc++.h>
 
 using namespace std;
 
