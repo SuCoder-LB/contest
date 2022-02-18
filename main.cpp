@@ -15,7 +15,7 @@ using id2 = array<id, 2>;
 using id3 = array<id, 3>;
 
 #define F(VAR,STA, NB) for(int (VAR) = static_cast<int>(STA); (VAR) < static_cast<int>(NB); ++(VAR))
-#define FC(VAR, NB, COND) for(int (VAR) = 0; (VAR) < static_cast<int>(NB); ++(VAR)) if (COND)
+#define FC(VAR,STA, NB, COND) for(int (VAR) = static_cast<int>(STA); (VAR) < static_cast<int>(NB); ++(VAR)) if (COND)
 
 #define DBG(...) fprintf(stdout, "(DBG) %s:%i: ", __FILE__,__LINE__); show(std::cout, #__VA_ARGS__, __VA_ARGS__); fflush(stdout);
 
@@ -204,7 +204,7 @@ std::vector<std::string> SplitStringWith(const std::string &s, char c) {
 }
 
 
-//int g[260000];
+int g[260000];
 //bool vis[260000];
 
 const int mod = 1e9 + 7;
@@ -212,8 +212,30 @@ int dir[4] = { -1,-1,1,1 };
 //int dir[4][2] = {{-1, 0}, {0, -1}, {0, 1}, {1, 0}};
 //int dir[9][2] = { {-1,-1}, {-1,0},{-1,1}, {0,-1},{0,0}, {0,1},{1,-1},{1,0},{1,1} };
 //int dir[9] = { -1,0,1, -1,0, 1,-1,0,1 };
+#include "union_find.h"
 
-
+class Solution {
+public:
+    int largestIsland(vector<vector<int>>& grid) {
+      fillArrayWithVector(g,grid,2);
+      int m=grid.size(),n=grid[0].size(),n2=n+2,m1n2=(m+1)*n2;
+      UnionFind* uf=new UnionFind(m1n2+n2);
+      dir[0]=-n2,dir[3]=n2;
+      F(i,n2,m1n2)FC(d,0,2,g[i]==1&&g[i+dir[d]]==1)uf->Join(i,i+dir[d]);
+      int ret=0;
+      F(i,n2,m1n2){
+        if(g[i]==0){
+          int cnt=0;
+          vector<int>t;
+          FC(d,0,4,g[i]+dir[d]==1)t.push_back(uf->Find(i+dir[d]));
+          sort_unique(t);
+          F(i,0,t.size())cnt+=uf->Size(t[i]);
+          ret=max(ret,cnt);
+        }
+      }
+      return ret+1;
+    }
+};
 
 #ifdef LOCAL
 signed main() {
