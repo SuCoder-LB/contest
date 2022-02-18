@@ -18,7 +18,8 @@ class UnionFind {
   int set_count_;
   int max_set_;
  public:
-  explicit UnionFind(int n) : n_(n), set_count_(n_), parent_(n), size_(n, 1), max_set_(1) {
+  explicit UnionFind(int n) :
+  n_(n), set_count_(n_), parent_(n),size_(n, 1),max_set_(1) {
     iota(parent_.begin(), parent_.end(), 0);
   }
 

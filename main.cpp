@@ -14,10 +14,15 @@ using id = int;
 using id2 = array<id, 2>;
 using id3 = array<id, 3>;
 
-#define F(VAR,STA, NB) for(int (VAR) = static_cast<int>(STA); (VAR) < static_cast<int>(NB); ++(VAR))
-#define FC(VAR,STA, NB, COND) for(int (VAR) = static_cast<int>(STA); (VAR) < static_cast<int>(NB); ++(VAR)) if (COND)
+#define F(VAR,STA, NB) \
+for(int (VAR) = static_cast<int>(STA); (VAR) < static_cast<int>(NB); ++(VAR))
 
-#define DBG(...) fprintf(stdout, "(DBG) %s:%i: ", __FILE__,__LINE__); show(std::cout, #__VA_ARGS__, __VA_ARGS__); fflush(stdout);
+#define FC(VAR,STA, NB, COND) \
+for(int (VAR) = static_cast<int>(STA); (VAR) < static_cast<int>(NB); ++(VAR)) \
+if (COND)
+
+#define DBG(...) fprintf(stdout, "(DBG) %s:%i: ", __FILE__,__LINE__); \
+show(std::cout, #__VA_ARGS__, __VA_ARGS__); fflush(stdout);
 
 using std::size_t;
 template<class T1, class T2>
@@ -58,7 +63,8 @@ std::ostream &show(std::ostream &out, const char *label, H1 &&value) {
 }
 
 template<typename H1, typename ...T>
-std::ostream& show(std::ostream& out, const char* label, H1&& value, T&&... rest) {
+std::ostream& show(std::ostream& out, const char* label,
+                   H1&& value, T&&... rest) {
   const char* pcomma = strchr(label, ',');
   return show(out.write(label, pcomma - label) << "="
                                                << std::forward<H1>(value)
@@ -121,7 +127,8 @@ void get2sum(vector<vector<int>> &grid, vector<vector<int>> &sum) {
   sum.resize(m + 1, vector<int>(n + 1, 0));
   for (int i = 0; i < m; ++i) {
     for (int j = 0; j < n; ++j) {
-      sum[i + 1][j + 1] = sum[i + 1][j] + sum[i][j + 1] - sum[i][j] + grid[i][j];
+      sum[i + 1][j + 1] =
+          sum[i + 1][j] + sum[i][j + 1] -sum[i][j] + grid[i][j];
     }
   }
 }
@@ -177,7 +184,8 @@ vector<int> HamiltonPath(vector<vector<int>> &pairs, int n) {
 }
 
 //降维加速，barrier为周围四边的填充
-void fillArrayWithVector(int *after, const vector<vector<int>> &grid, int barrier = 0) {
+void fillArrayWithVector(int *after, const vector<vector<int>> &grid,
+                         int barrier = 0) {
   int m = static_cast<int>(grid.size());
   int n = static_cast<int>(grid[0].size());
   int cnt = -1;
@@ -210,7 +218,6 @@ int g[260000];
 const int mod = 1e9 + 7;
 int dir[4] = { -1,-1,1,1 };
 //int dir[4][2] = {{-1, 0}, {0, -1}, {0, 1}, {1, 0}};
-//int dir[9][2] = { {-1,-1}, {-1,0},{-1,1}, {0,-1},{0,0}, {0,1},{1,-1},{1,0},{1,1} };
 //int dir[9] = { -1,0,1, -1,0, 1,-1,0,1 };
 #include "union_find.h"
 
@@ -239,16 +246,19 @@ class Solution {
 
 #ifdef LOCAL
 signed main() {
-  //vector<VI>lamps = { {2,0},{1,2} };
-  //vector<VI>queries = { {2,3},{0,3} };
-  //vector<VI>grid ={ {0, 1, 0, 0, 0, 0, 0, 1},{0, 1, 0, 0, 0, 0, 0, 1},{0, 0, 0, 0, 0, 0, 0, 1},{0, 0, 0, 0, 0, 0, 0, 0} };
-  //vector<VI>grid={{0,0,0,0},{1,0,1,0},{0,1,1,0},{0,0,0,0}};
-  //vector<VI> board = {{1, 2, 3}, {4, 0, 5}};
-  //vector<VI>intervals = { {1, 3},{1, 4},{2, 5},{3, 5} };
-  //vector<VI>intervals= {{1, 2}, {2, 3}, {2, 4}, {4, 5}};
-  //VI a={4,1,6,5};
-  //VI a={1,2,3,4,5,6};
-  //string expr="(e + 8) * (e - 8)";
+//  vector<VI>lamps = { {2,0},{1,2} };
+//  vector<VI>queries = { {2,3},{0,3} };
+//  vector<VI>grid ={ {0, 1, 0, 0, 0, 0, 0, 1},
+//                    {0, 1, 0, 0, 0, 0, 0, 1},
+//                    {0, 0, 0, 0, 0, 0, 0, 1},
+//                    {0, 0, 0, 0, 0, 0, 0, 0} };
+//  vector<VI>grid={{0,0,0,0},{1,0,1,0},{0,1,1,0},{0,0,0,0}};
+//  vector<VI> board = {{1, 2, 3}, {4, 0, 5}};
+//  vector<VI>intervals = { {1, 3},{1, 4},{2, 5},{3, 5} };
+//  vector<VI>intervals= {{1, 2}, {2, 3}, {2, 4}, {4, 5}};
+//  VI a={4,1,6,5};
+//  VI a={1,2,3,4,5,6};
+//  string expr="(e + 8) * (e - 8)";
 
   return 0;
 }

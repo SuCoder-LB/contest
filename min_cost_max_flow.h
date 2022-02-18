@@ -20,8 +20,8 @@ struct MinCostMaxFlow {
   vector<pair<int,int>> par_;
 
   explicit MinCostMaxFlow(int N) :
-      n_(N), ed_(N), red_(N), cap_(N, vector<long long>(N)), flow_(cap_), cost_(cap_),
-      seen_(N), dist_(N), pi_(N), par_(N) {}
+      n_(N), ed_(N), red_(N), cap_(N, vector<long long>(N)),
+      flow_(cap_), cost_(cap_),seen_(N), dist_(N), pi_(N), par_(N) {}
 
   void addEdge(int from, int to, long long cap, long long cost) {
     this->cap_[from][to] = cap;

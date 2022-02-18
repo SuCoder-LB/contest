@@ -11,9 +11,11 @@ using namespace std;
 
 //nodes_out,第一维，点，第二维边，其array[0]为指向点，array[1]为边的id
 //共有nedges条边，src为源点，如不确定是环，最好提前判断出点度数-入点度数=1的点作为源点
-vector<int> EulerPath(vector<vector<array<int, 2>>>& nodes_out, const vector<int>&nodes_n_ins, int n_edges, int src= 0) {
+vector<int> EulerPath(vector<vector<array<int, 2>>>& nodes_out,
+                      const vector<int>&nodes_n_ins, int n_edges, int src= 0) {
   int c = 0;
-  for(int i=0;i<nodes_out.size();++i)c+=abs(nodes_n_ins[i]-(int)nodes_out[i].size());
+  for(int i=0;i<nodes_out.size();++i)
+    c+=abs(nodes_n_ins[i]-(int)nodes_out[i].size());
   if (c > 2) return {};
   vector<vector<array<int,2>>::iterator> its;
   its.reserve(nodes_out.size());

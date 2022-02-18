@@ -9,7 +9,8 @@
 using namespace std;
 
 //有向图的最短路径，edges[i]存放第i个点的指向点，第队列可改为优先队列
-bool TopologicalSorting(const vector<vector<int>> &edges, vector<int> &idx, int n) {
+bool TopologicalSorting(const vector<vector<int>> &edges,
+                        vector<int> &idx,int n) {
   vector<int> in_degree(n);
   for(int i=0;i<n;++i)for(auto e:edges[i])++in_degree[e];
 
@@ -26,7 +27,8 @@ bool TopologicalSorting(const vector<vector<int>> &edges, vector<int> &idx, int 
 }
 
 //无向图的拓扑排序(可用于求最短路径)，edges[i]存放所有与i相关联的边
-bool TopologicalSorting(const vector<vector<int>> &edges, vector<int> &idx, int n,int s) {
+bool TopologicalSorting(const vector<vector<int>> &edges, vector<int> &idx,
+                        int n,int s) {
   idx.clear();idx.resize(n,-1);
 
   queue<int> q; // use priority queue for smallest ans.
