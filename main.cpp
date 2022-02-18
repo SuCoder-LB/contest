@@ -214,27 +214,27 @@ int dir[4] = { -1,-1,1,1 };
 //int dir[9] = { -1,0,1, -1,0, 1,-1,0,1 };
 #include "union_find.h"
 
+//leetcode 827
+
 class Solution {
-public:
-    int largestIsland(vector<vector<int>>& grid) {
-      fillArrayWithVector(g,grid,2);
-      int m=grid.size(),n=grid[0].size(),n2=n+2,m1n2=(m+1)*n2;
-      UnionFind* uf=new UnionFind(m1n2+n2);
-      dir[0]=-n2,dir[3]=n2;
-      F(i,n2,m1n2)FC(d,0,2,g[i]==1&&g[i+dir[d]]==1)uf->Join(i,i+dir[d]);
-      int ret=0;
-      F(i,n2,m1n2){
-        if(g[i]==0){
-          int cnt=0;
-          vector<int>t;
-          FC(d,0,4,g[i]+dir[d]==1)t.push_back(uf->Find(i+dir[d]));
-          sort_unique(t);
-          F(i,0,t.size())cnt+=uf->Size(t[i]);
-          ret=max(ret,cnt);
-        }
+ public:
+  int largestIsland(vector<vector<int>>& grid) {
+    fillArrayWithVector(g,grid,2);
+    int m=grid.size(),n=grid[0].size(),n2=n+2,mn=m*n,m1n2=(m+1)*n2;
+    UnionFind* uf=new UnionFind(m1n2+n2);
+    dir[0]=-n2,dir[3]=n2;
+    F(i,n2,m1n2)FC(d,0,2,g[i]==1&&g[i+dir[d]]==1)uf->Join(i,i+dir[d]);
+    int ret=0;bool allone= true;
+    FC(i,n2,m1n2,!g[i]){
+        int cnt=0;allone=false;
+        vector<int>t;
+        FC(d,0,4,g[i+dir[d]]==1)t.push_back(uf->Find(i+dir[d]));
+        sort_unique(t);
+        F(i,0,t.size())cnt+=uf->Size(t[i]);
+        ret=max(ret,cnt);
       }
-      return ret+1;
-    }
+    return allone?mn:ret+1;
+  }
 };
 
 #ifdef LOCAL
