@@ -221,6 +221,62 @@ int dir[4] = { -1,-1,1,1 };
 //int dir[9] = { -1,0,1, -1,0, 1,-1,0,1 };
 
 
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+//class Solution {
+// public:
+//  ListNode* mergeNodes(ListNode* head) {
+//    vector<int>t;
+//    while(head)t.push_back(head->val),head=head->next;
+//    vector<int>ret;
+//    int temp=0;
+//    F(i,0,t.size()){
+//      if(t[i]==0&&temp)ret.push_back(temp),temp=0;
+//      else{
+//        temp+=t[i];
+//      }
+//    }
+//    ListNode* h=new ListNode();
+//    t=h;
+//    F(i,0,ret.size()){
+//      t->val=ret[i];
+//      if(i<ret.size()-1)
+//      t->next=new ListNode();
+//      t=t->next;
+//    }
+//    return h;
+//  }
+//};
+
+
+class Solution {
+ public:
+  unordered_map<LL,LL>hash;
+  long long coutPairs(vector<int>& nums, int k) {
+    F(i,0,nums.size())hash[__gcd(nums[i],k)]++;
+    LL ret=0;
+    for(auto c:hash){
+        LL t=k/c.first>=c.first?k/c.first: c.first/k/c.first*(k/c.first)+k/c.first;
+        LL tt=t;
+        while(tt<=k){
+          if(tt==c.first)ret+=c.second*(c.second-1)/2;
+          else if(tt>c.first&&hash.count(tt))ret+=c.second*hash[tt];
+          tt+=t;
+        }
+    }
+    return ret;
+  }
+
+
+};
 
 
 
@@ -240,8 +296,8 @@ signed main() {
 //  VI a={1,2,3,4,5,6};
 //  string expr="(e + 8) * (e - 8)";
 
-  VI a={4,0,1,3,2},b={4,1,0,2,3};
-  Solution().goodTriplets(a,b);
+  VI a={47,72,94,31,93,18,36,45,1},b={4,1,0,2,3};
+Solution().coutPairs(a,30);
   return 0;
 }
 
