@@ -10,7 +10,7 @@
 using namespace std;
 
 struct SegmentTree {
-  typedef int T;
+  typedef long long T;
   static const T LOW = INT_MIN;
   T f(T a, T b) { return a+b; } // (any associative fn)
   vector<T> s; int n;
@@ -22,10 +22,20 @@ struct SegmentTree {
   T Query(int b, int e) { // query [b, e)
     T ra = 0, rb = 0;
     for (b += n, e += n; b < e; b /= 2, e /= 2) {
-      if (b % 2) ra = f(ra, s[b++]);
-      if (e % 2) rb = f(s[--e], rb);
+      if (b % 2) ra = f(ra, b*s[b++]);
+      if (e % 2) rb = f(s[--e]*e, rb);
     }
     return f(ra, rb);
+  }
+  int LowerBound(long long sum) {// min pos st sum of [0, pos] >= sum
+    // Returns n if no sum is >= sum, or -1 if empty sum is.
+    if (sum <= 0) return -1;
+    int pos = 0;
+    for (int pw = 1 << 25; pw; pw >>= 1) {
+      if (pos + pw <= s.size() && s[pos + pw-1] < sum)
+        pos += pw, sum -= s[pos-1];
+    }
+    return pos;
   }
 };
 
