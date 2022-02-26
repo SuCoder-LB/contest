@@ -9,7 +9,6 @@
 
 using namespace std;
 
-//字典树
 const int TrieN = 100010;
 class Trie {
  public:
@@ -26,19 +25,19 @@ class Trie {
   /** Inserts a word into the trie. */
   void insert(string word) {
     int p = 0;
-    int n=static_cast<int>(word.size());
+    int n = static_cast<int>(word.size());
     for (int i = 0; i < n; ++i) {
       int u = word[i] - 'a';
       if (!son[p][u]) son[p][u] = ++idx;
       p = son[p][u];
     }
-    cnt[p]++;  //以某个字母结尾的单词有多少个
+    cnt[p]++;  //how many words
   }
 
   /** Returns if the word is in the trie. */
   bool search(string word) {
     int p = 0;
-    int n=static_cast<int>(word.size());
+    int n = static_cast<int>(word.size());
     for (int i = 0; i < n; ++i) {
       int u = word[i] - 'a';
       if (!son[p][u]) return false;
@@ -52,7 +51,7 @@ class Trie {
   /** Returns if there is any word in the trie that starts with the given prefix. */
   bool startsWith(string prefix) {
     int p = 0;
-    int n=static_cast<int>(prefix.size());
+    int n = static_cast<int>(prefix.size());
     for (int i = 0; i < n; ++i) {
       int u = prefix[i] - 'a';
       if (!son[p][u]) return false;
@@ -61,6 +60,5 @@ class Trie {
     return true;
   }
 };
-
 
 #endif //CONTEST__TRIES_H_

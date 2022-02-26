@@ -8,10 +8,9 @@
 
 using namespace std;
 
-
 long long ModularPow(long long a, long long e, const long long mod) {
   if (e == 0) return 1;
-  long long x = ModularPow(a * a % mod, e >> 1,mod);
+  long long x = ModularPow(a * a % mod, e >> 1, mod);
   return e & 1 ? x * a % mod : x;
 }
 
