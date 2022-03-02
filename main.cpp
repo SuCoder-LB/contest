@@ -313,9 +313,59 @@ int dir[4][2] = {{-1, 0}, {0, -1}, {0, 1}, {1, 0}};
 //int dir[9] = { -1,0,1, -1,0, 1,-1,0,1 };
 
 
+class Solution {
+ public:
+  vector<int> movesToStamp(string stamp, string target) {
+    int m=stamp.size(),n=target.size();
+    queue<int>q;
+    vector<bool>done(n);
+    vector<int>ret;
+    vector<array<set<int>,2>>a;
+    for(int i=0;i<=n-m;++i){
+      set<int>made,todo;
+      for(int j=0;j<m;++j){
+        if(target[i+j]==stamp[j])made.insert(i+j);
+        else todo.insert(i+j);
+      }
+      a.push_back({made,todo});
+      if(todo.empty()){
+        ret.push_back(i);
+        for(int j=i;j<i+m;++j){
+          if(!done[j]){
+            q.push(j);
+            done[j]=true;
+          }
+        }
+      }
+    }
 
+    while(!q.empty()){
+      int i=q.front();q.pop();
+      for(int j=max(0,i-m+1);j<min(n-m,i);++j){
+        if(a[j][1].count(i)){
+          a[j][1].erase(i);
+          if(a[j][0].empty()){
+            ret.push_back(j);
+            for(auto t:a[j][0])if(!done[t]){
+                done[t]=true;
+                q.push(t);
+            }
+          }
+        }
+      }
+    }
+    for(auto b:done)if(!b)return {};
+    reverse(ret.begin(),ret.end());
+    return ret;
+  }
+};
 #ifdef LOCAL
 signed main() {
+  vector<VI> A = {{2, 3}, {3, 4}};
+  int M = 5;
+  int numLaps = 4;
+  //Solution().movesToStamp("aba","abababa");
+  //DBG(Solution().minimumFinishTime(A, M, numLaps));
 
   return 0;
 }

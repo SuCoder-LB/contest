@@ -43,4 +43,37 @@ vector<int> EulerPath(vector<vector<array<int, 2>>> &nodes_out,
   return ret;
 }
 
+vector<int> MinPath(const vector<vector<int>> &dis) {
+  int n = dis.size();
+  vector<vector<int>> dp(1 << n, vector<int>(n, -1)),
+      parent(1 << n, vector<int>(n, -1));
+  for (int mask = 0; mask < 1 << n; ++mask)
+    for (int bit = 0; bit < n; ++bit)
+      if ((mask >> bit) & 1) {
+        int pmask = mask;
+        pmask ^= 1 << bit;
+        if (pmask == 0)continue;
+        for (int i = 0; i < n; ++i)
+          if ((pmask >> i) & 1) {
+            int val = dp[pmask][i] + dis[i][bit];
+            //DBG(mask,bit,pmask,i,dp[pmask][i],val,dp[mask][bit]);
+            if (dp[mask][bit] == -1 || val <= dp[mask][bit]) {
+              dp[mask][bit] = val;
+              parent[mask][bit] = i;
+            }
+          }
+      }
+  //DBG(dp,parent);
+  int mask = (1 << n) - 1;
+  int p = max_element(dp[mask].begin(), dp[mask].end()) - dp[mask].begin();
+  vector<int> ret;
+  while (p != -1) {
+    ret.push_back(p);
+    int pp = parent[mask][p];
+    mask ^= 1 << p;
+    p = pp;
+  }
+  reverse(ret.begin(), ret.end());
+  return ret;
+}
 #endif //CONTEST__EULER_PATH_H_
