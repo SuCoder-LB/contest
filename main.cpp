@@ -313,62 +313,150 @@ int dir[4][2] = {{-1, 0}, {0, -1}, {0, 1}, {1, 0}};
 //int dir[9] = { -1,0,1, -1,0, 1,-1,0,1 };
 
 
+
+//
+//double cmp(double total,double loss,double down){
+//  return 29.2*loss+30.2*total*down-total;
+//}
+//class Solution {
+// public:
+//  unordered_map<int,int>hash;
+//  int mostFrequent(vector<int>& nums, int key) {
+//    for(int i=1;i<nums.size();++i){
+//      if(nums[i-1]==key){
+//        hash[nums[i]]++;
+//      }
+//    }
+//    int ret=-1,maxid=-1;
+//    for(auto c:hash){
+//      if(c.second>maxid){
+//        ret=c.first;
+//        maxid=c.second;
+//      }
+//    }
+//    return ret;
+//  }
+//};
+
+
+//class Solution {
+// public:
+//  int tr(vector<int>&mapping,int x){
+//    string sx= to_string(x);
+//    for(int i=0;i<sx.size();++i){
+//      sx[i]='0'+mapping[sx[i]-'0'];
+//    }
+//    return stoi(sx);
+//  }
+//  vector<int> sortJumbled(vector<int>& mapping, vector<int>& nums) {
+//    vector<array<int,3>>temp;
+//    for(int i=0;i<nums.size();++i){
+//      temp.push_back({nums[i],i,tr(mapping,nums[i])});
+//    }
+//    sort(temp.begin(),temp.end(),[&](auto a,auto b){
+//      return a[2]==b[2]?a[1]<b[1]:a[2]<b[2];
+//    });
+//    vector<int>ret;
+//    for(auto c:temp)ret.push_back(c[0]);
+//    return ret;
+//  }
+//};
+
+
+//class Solution {
+// public:
+//
+//  unordered_map<int,unordered_set<int>>fathers;
+//  vector<vector<int>> getAncestors(int n, vector<vector<int>>& edges) {
+//
+//    for(auto e:edges){
+//      fathers[e[1]].insert(e[0]);
+//    }
+//    vector<vector<int>>ret(n);
+//    for(int i=0;i<n;++i){
+//      vector<bool>vis(n, false);
+//      queue<int>q;
+//      for(auto c:fathers[i]){
+//        ret[i].push_back(c);
+//        q.push(c);
+//        vis[c]=true;
+//      }
+//      while(!q.empty()){
+//        int t=q.front();q.pop();
+//        for(auto x:fathers[t]){
+//          if(!vis[x]){
+//            q.push(x);
+//            vis[x]=true;
+//            fathers[i].insert(x);
+//            ret[i].push_back(x);
+//          }
+//        }
+//      }
+//      sort_unique(ret[i]);
+//    }
+//    return ret;
+//  }
+//};
+
 class Solution {
  public:
-  vector<int> movesToStamp(string stamp, string target) {
-    int m=stamp.size(),n=target.size();
-    queue<int>q;
-    vector<bool>done(n);
-    vector<int>ret;
-    vector<array<set<int>,2>>a;
-    for(int i=0;i<=n-m;++i){
-      set<int>made,todo;
-      for(int j=0;j<m;++j){
-        if(target[i+j]==stamp[j])made.insert(i+j);
-        else todo.insert(i+j);
-      }
-      a.push_back({made,todo});
-      if(todo.empty()){
-        ret.push_back(i);
-        for(int j=i;j<i+m;++j){
-          if(!done[j]){
-            q.push(j);
-            done[j]=true;
-          }
-        }
+  int minMovesToMakePalindrome(string s) {
+
+    int n=s.size();
+    int ret=0;
+    vector<int>cnt(26,0);
+    for(auto c:s)cnt[c-'a']++;
+    bool haveodd=false;
+    char oddchar;
+    int oddcharcnt;
+    for(int i=0;i<26;++i){
+      if(cnt[i]%2!=0){
+        haveodd=true;
+        oddchar='a'+i;
+        oddcharcnt=cnt[i];
       }
     }
 
-    while(!q.empty()){
-      int i=q.front();q.pop();
-      for(int j=max(0,i-m+1);j<min(n-m,i);++j){
-        if(a[j][1].count(i)){
-          a[j][1].erase(i);
-          if(a[j][0].empty()){
-            ret.push_back(j);
-            for(auto t:a[j][0])if(!done[t]){
-                done[t]=true;
-                q.push(t);
-            }
-          }
-        }
+    for(int i=0;i<n/2;++i){
+      char cur=s[i];
+      char temp=cur;
+      if(haveodd&&cur==oddchar&&oddcharcnt==1){
+        ++ret;
+        swap(s[i],s[i+1]);
+        cur=s[i];
+        temp=cur;
+      }else if(haveodd&&cur==oddchar){
+        oddcharcnt-=2;
       }
+
+      //DBG(temp,cur,i,ret);
+      for(int j=n-1-i;j>=0;--j){
+        if(s[j]==cur){
+          s[j]=temp;
+          break;
+        }
+        swap(temp,s[j]);
+        ++ret;
+        //DBG(j,s[j],temp,ret);
+      }
+      DBG(ret,s);
     }
-    for(auto b:done)if(!b)return {};
-    reverse(ret.begin(),ret.end());
     return ret;
   }
 };
+
+
 #ifdef LOCAL
 signed main() {
-  vector<VI> A = {{2, 3}, {3, 4}};
-  int M = 5;
-  int numLaps = 4;
+
   //Solution().movesToStamp("aba","abababa");
   //DBG(Solution().minimumFinishTime(A, M, numLaps));
+Solution().minMovesToMakePalindrome("skwhhaaunskegmdtutlgtteunmuuludii");
 
   return 0;
 }
+
+
 
 #endif
 
