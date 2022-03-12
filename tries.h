@@ -7,7 +7,6 @@
 
 #include <bits/stdc++.h>
 
-using namespace std;
 
 const int TrieN = 100010;
 class Trie {
@@ -23,7 +22,7 @@ class Trie {
   }
 
   /** Inserts a word into the trie. */
-  void insert(string word) {
+  void insert(const std::string &word) {
     int p = 0;
     int n = static_cast<int>(word.size());
     for (int i = 0; i < n; ++i) {
@@ -35,7 +34,7 @@ class Trie {
   }
 
   /** Returns if the word is in the trie. */
-  bool search(string word) {
+  bool search(const std::string &word) {
     int p = 0;
     int n = static_cast<int>(word.size());
     for (int i = 0; i < n; ++i) {
@@ -49,7 +48,7 @@ class Trie {
   }
 
   /** Returns if there is any word in the trie that starts with the given prefix. */
-  bool startsWith(string prefix) {
+  bool startsWith(const std::string &prefix) {
     int p = 0;
     int n = static_cast<int>(prefix.size());
     for (int i = 0; i < n; ++i) {

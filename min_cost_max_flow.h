@@ -7,23 +7,21 @@
 
 #include <bits/stdc++.h>
 
-using namespace std;
-
 struct MinCostMaxFlow {
-  const long long INF = numeric_limits<long long>::max() / 4;
+  const long long INF = std::numeric_limits<long long>::max() / 4;
 
   int n_;
-  vector<vector<int>> ed_, red_;
-  vector<vector<long long >> cap_, flow_, cost_;
-  vector<int> seen_;
-  vector<long long> dist_, pi_;
-  vector<pair<int, int>> par_;
+  std::vector<std::vector<int>> ed_, red_;
+  std::vector<std::vector<long long >> cap_, flow_, cost_;
+  std::vector<int> seen_;
+  std::vector<long long> dist_, pi_;
+  std::vector<std::pair<int, int>> par_;
 
   explicit MinCostMaxFlow(int N)
       : n_(N),
         ed_(N),
         red_(N),
-        cap_(N, vector<long long>(N)),
+        cap_(N, std::vector<long long>(N)),
         flow_(cap_),
         cost_(cap_),
         seen_(N),
@@ -44,7 +42,7 @@ struct MinCostMaxFlow {
     dist_[s] = 0;
     long long di;
 
-    priority_queue<pair<long long, int>> q;
+    std::priority_queue<std::pair<long long, int>> q;
     q.push({0, s});
 
     auto relax = [&](int i, long long cap, long long cost, int dir) {
@@ -68,28 +66,28 @@ struct MinCostMaxFlow {
         if (!seen_[i])
           relax(i, flow_[i][s], -cost_[i][s], 0);
     }
-    for (int i = 0; i < n_; ++i) pi_[i] = min(pi_[i] + dist_[i], INF);
+    for (int i = 0; i < n_; ++i) pi_[i] = std::min(pi_[i] + dist_[i], INF);
   }
 
-  array<long long, 2> maxflow(int s, int t) {
-    long long totflow = 0, totcost = 0;
+  std::array<long long, 2> maxflow(int s, int t) {
+    long long total_flow = 0, tot_cost = 0;
     while (path(s), seen_[t]) {
       long long fl = INF;
-      for (int p, r, x = t; tie(p, r) = par_[x], x != s; x = p)
-        fl = min(fl, r ? cap_[p][x] - flow_[p][x] : flow_[x][p]);
-      totflow += fl;
-      for (int p, r, x = t; tie(p, r) = par_[x], x != s; x = p)
+      for (int p, r, x = t; std::tie(p, r) = par_[x], x != s; x = p)
+        fl = std::min(fl, r ? cap_[p][x] - flow_[p][x] : flow_[x][p]);
+      total_flow += fl;
+      for (int p, r, x = t; std::tie(p, r) = par_[x], x != s; x = p)
         if (r) flow_[p][x] += fl;
         else flow_[x][p] -= fl;
     }
     for (int i = 0; i < n_; ++i)
       for (int j = 0; j < n_; ++j)
-        totcost += cost_[i][j] * flow_[i][j];
-    return {totflow, totcost};
+        tot_cost += cost_[i][j] * flow_[i][j];
+    return {total_flow, tot_cost};
   }
 
   // If some costs can be negative, call this before maxflow:
-  void setpi(int s) { // (otherwise, leave this out)
+  void SetPi(int s) { // (otherwise, leave this out)
     fill(pi_.begin(), pi_.end(), INF);
     pi_[s] = 0;
     int it = n_, ch = 1;

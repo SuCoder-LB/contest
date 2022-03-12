@@ -7,13 +7,11 @@
 
 #include <bits/stdc++.h>
 
-using namespace std;
-
 struct SegmentTree {
   typedef long long T;
   static const T LOW = INT_MIN;
   T f(T a, T b) { return a + b; } // (any associative fn)
-  vector<T> s;
+  std::vector<T> s;
   int n;
   SegmentTree(int n = 0, T def = 0) : s(2 * n, def), n(n) {}
   void Update(int pos, T val) {

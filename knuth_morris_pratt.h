@@ -7,10 +7,9 @@
 
 #include <bits/stdc++.h>
 
-using namespace std;
-
-vector<int> pi(const string &s) {
-  vector<int> p(s.size());
+namespace knuth_morris_pratt{
+std::vector<int> pi(const std::string &s) {
+  std::vector<int> p(s.size());
   for (int i = 1; i < (int)s.size(); ++i) {
     int g = p[i - 1];
     while (g && (s[i] != s[g])) g = p[g - 1];
@@ -18,9 +17,11 @@ vector<int> pi(const string &s) {
   }
   return p;
 }
+}//knuth_morris_pratt
 
-vector<int> match(const string &s, const string &pat) {
-  vector<int> p = pi(pat + '\0' + s), res;
+
+std::vector<int> match(const std::string &s, const std::string &pat) {
+  std::vector<int> p = knuth_morris_pratt::pi(pat + '\0' + s), res;
   for (int i = (int)p.size() - (int)s.size(); i < (int)p.size(); ++i)
     if (p[i] == (int)pat.size()) res.push_back(i - 2 * (int)pat.size());
   return res;

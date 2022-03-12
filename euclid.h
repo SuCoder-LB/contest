@@ -7,10 +7,8 @@
 
 #include<bits/stdc++.h>
 
-using namespace std;
-
 long long GreatestCommonDivisor(long long a, long long b) {
-  return __gcd(a, b);
+  return std::__gcd(a, b);
 }
 
 //return ax+by=d=gcd(a,b)

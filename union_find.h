@@ -6,12 +6,10 @@
 #define CONTEST__UNION_FIND_H_
 #include <bits/stdc++.h>
 
-using namespace std;
-
 class UnionFind {
  public:
-  vector<int> parent_;
-  vector<int> size_;
+  std::vector<int> parent_;
+  std::vector<int> size_;
   int n_, set_count_, max_set_;
  public:
   explicit UnionFind(int n)
@@ -30,11 +28,11 @@ class UnionFind {
       return false;
     }
     if (size_[x] < size_[y]) {
-      swap(x, y);
+      std::swap(x, y);
     }
     parent_[y] = x;
     size_[x] += size_[y];
-    max_set_ = max(max_set_, size_[x]);
+    max_set_ = std::max(max_set_, size_[x]);
     --set_count_;
     return true;
   }

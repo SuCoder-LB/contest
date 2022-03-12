@@ -6,8 +6,6 @@
 #define CONTEST__MODULAR_POW_H_
 #include <bits/stdc++.h>
 
-using namespace std;
-
 long long ModularPow(long long a, long long e, const long long mod) {
   if (e == 0) return 1;
   long long x = ModularPow(a * a % mod, e >> 1, mod);

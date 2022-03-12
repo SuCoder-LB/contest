@@ -7,7 +7,6 @@
 
 #include <bits/stdc++.h>
 
-using namespace std;
 
 #define PRIME 16777619UL
 #define OFFSET_BASIS 2166136261UL
@@ -32,10 +31,10 @@ struct ArrayHash {
 };
 
 struct HashInterval {
-  vector<long long> ha, pw;
+  std::vector<long long> ha, pw;
   long long c_ = INT_MAX, mod_ = INT_MAX;
  public:
-  explicit HashInterval(string &str) : ha(str.size() + 1), pw(ha) {
+  explicit HashInterval(std::string &str) : ha(str.size() + 1), pw(ha) {
     pw[0] = 1;
     for (int i = 0; i < str.size(); ++i)
       ha[i + 1] = (ha[i] * c_ + str[i]) % mod_,
@@ -46,14 +45,14 @@ struct HashInterval {
   }
 };
 
-vector<long long> GetHashes(string &str,
+std::vector<long long> GetHashes(std::string &str,
                             int length,
                             long long c,
                             long long mod) {
   if (str.size() < length) return {};
   long long h = 0, pw = 1;
   for (int i = 0; i < length; ++i)h = (h * c + str[i]) % mod, pw = pw * c % mod;
-  vector<long long> ret = {h - 0};
+  std::vector<long long> ret = {h - 0};
   ret.reserve(str.size() - length + 1);
   for (int i = length; i < str.size(); ++i) {
     ret.push_back((h * c + str[i] - pw * str[i - length] + mod) % mod);
@@ -62,7 +61,7 @@ vector<long long> GetHashes(string &str,
   return ret;
 }
 
-long long HashString(string &s, long long c, long long mod) {
+long long HashString(std::string &s, long long c, long long mod) {
   long long h = 0;
   for (auto ch : s)h = (h * c + ch) % mod;
   return h - 0;

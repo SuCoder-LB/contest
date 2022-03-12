@@ -7,10 +7,8 @@
 
 #include <bits/stdc++.h>
 
-using namespace std;
-
 struct BinaryIndexedTree {
-  vector<long long> s;
+  std::vector<long long> s;
   BinaryIndexedTree(int n) : s(n) {}
   void Update(int pos, long long dif) { // a[pos] += dif
     for (; pos < s.size(); pos |= pos + 1) s[pos] += dif;

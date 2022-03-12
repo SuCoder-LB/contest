@@ -2,43 +2,62 @@
 
 #include<bits/stdc++.h>
 
-using namespace std;
+//using namespace std;
 
-using VI = vector<int>;
-using PII = pair<int, int>;
-using vec2 = array<double, 2>;
-using vec3 = array<double, 3>;
-using LL = long long;
 
-using id = int;
-using id2 = array<id, 2>;
-using id3 = array<id, 3>;
-
-#define F(VAR, STA, NB) \
-for(int (VAR) = static_cast<int>(STA); (VAR) < static_cast<int>(NB); ++(VAR))
-
-#define FC(VAR, STA, NB, COND) \
-for(int (VAR) = static_cast<int>(STA); (VAR) < static_cast<int>(NB); ++(VAR)) \
-if (COND)
+namespace {
 
 #define DBG(...) fprintf(stdout, "(DBG) %s:%i: ", __FILE__,__LINE__); \
 show(std::cout, #__VA_ARGS__, __VA_ARGS__); fflush(stdout);
 
-template<class T1, class T2>
-std::ostream &operator<<(std::ostream &os, const std::pair<T1, T2> &val);
-template<class T, size_t N>
-std::ostream &operator<<(std::ostream &os, const std::array<T, N> &values);
+//the ith pos of value to 0
+inline void RemoveBitValue(int &value, int index) {
+  value &= (~(1 << index));
+}
+
 template<class T>
-std::ostream &operator<<(std::ostream &os, const std::vector<T> &values);
-template<class T1, class T2>
-std::ostream &operator<<(std::ostream &os,
-                         const std::unordered_map<T1, T2> &val);
-template<class T1, class T2>
-std::ostream &operator<<(std::ostream &os, const std::map<T1, T2> &val);
+inline std::array<T, 2> sorted(T v1, T v2) {
+  if (v1 < v2) { return {v1, v2}; } else { return {v2, v1}; }
+}
+
 template<class T>
-std::ostream &operator<<(std::ostream &os, const std::unordered_set<T> &val);
+inline std::array<T, 3> sorted(T v1, T v2, T v3) {
+  if (v1 > v3) std::swap(v1, v3);
+  if (v1 > v2) std::swap(v1, v2);
+  if (v2 > v3) std::swap(v2, v3);
+  return std::array<T, 3>{v1, v2, v3};
+}
+
 template<class T>
-std::ostream &operator<<(std::ostream &os, const std::set<T> &val);
+inline T min_value(T v1, T v2, T v3) {
+  return std::min(v1, std::min(v2, v3));
+}
+
+template<class T>
+inline T min_value(T v1, T v2, T v3, T v4) {
+  return std::min(std::min(v1, v2), std::min(v3, v4));
+}
+
+template<class T>
+inline T max_value(T v1, T v2, T v3) {
+  return std::max(v1, std::max(v2, v3));
+}
+
+template<class T>
+inline T max_value(T v1, T v2, T v3, T v4) {
+  return std::max(std::max(v1, v2), std::max(v3, v4));
+}
+
+template<class T>
+void sort_unique(std::vector<T> &vec) {
+  std::sort(vec.begin(), vec.end());
+  vec.erase(std::unique(vec.begin(), vec.end()), vec.end());
+}
+
+template<class T>
+void append(std::vector<T> &v1, const std::vector<T> &v2) {
+  v1.insert(v1.end(), v2.begin(), v2.end());
+}
 
 template<class T1, class T2>
 std::ostream &operator<<(std::ostream &os, const std::pair<T1, T2> &val) {
@@ -72,17 +91,25 @@ std::ostream &operator<<(std::ostream &os, const std::vector<T> &values) {
   return os;
 }
 
+template<class T>
+std::ostream &operator<<(std::ostream &os,
+                         const std::unordered_set<T> &values) {
+  os << "{";
+  for (const T &v : values) {
+    os << v << ", ";
+  }
+  os << "}";
+  return os;
+}
+
 template<class T1, class T2>
 std::ostream &operator<<(std::ostream &os,
-                         const std::unordered_map<T1, T2> &val) {
-  os << "[";
-  for (auto v = val.begin(); v != val.end(); ++v) {
-    if (v != val.begin()) {
-      os << ", ";
-    }
-    os << "(" << v->first << "," << v->second << ")";
+                         const std::unordered_map<T1, T2> &values) {
+  os << "{";
+  for (const auto &kv : values) {
+    os << kv.first << ": " << kv.second << ", ";
   }
-  os << "]";
+  os << "}";
   return os;
 }
 
@@ -94,19 +121,6 @@ std::ostream &operator<<(std::ostream &os, const std::map<T1, T2> &val) {
       os << ", ";
     }
     os << "(" << v->first << "," << v->second << ")";
-  }
-  os << "]";
-  return os;
-}
-
-template<class T>
-std::ostream &operator<<(std::ostream &os, const std::unordered_set<T> &val) {
-  os << "[";
-  for (auto v = val.begin(); v != val.end(); ++v) {
-    if (v != val.begin()) {
-      os << ", ";
-    }
-    os << (*v);
   }
   os << "]";
   return os;
@@ -141,115 +155,41 @@ std::ostream &show(std::ostream &out, const char *label,
               std::forward<T>(rest)...);
 }
 
-template<class T>
-void sort_unique(std::vector<T> &vec) {
-  std::sort(vec.begin(), vec.end());
-  vec.erase(std::unique(vec.begin(), vec.end()), vec.end());
-}
-
-template<class T1, class T2>
-inline std::vector<T2> dynamic_cast_vector(const std::vector<T1> &pointers) {
-  std::vector<T2> output(pointers.size(), NULL);
-  for (size_t i = 0; i < pointers.size(); ++i) {
-    output[i] = dynamic_cast<T2>(pointers[i]);
+inline void sformat(std::ostream &out, const char *s) {
+  while (*s) {
+    assert(!(*s == '{' && *(s + 1) == '}'));
+    out << *s++;
   }
-  return output;
 }
 
-template<class T>
-void append(std::vector<T> &v1, const std::vector<T> &v2) {
-  v1.insert(v1.end(), v2.begin(), v2.end());
-}
-
-template<typename T>
-int findLastOf(const T &value, const std::vector<T> &vec) {
-  if (vec.size() == 0) return -1;
-  auto it = std::find(vec.rbegin(), vec.rend(), value);
-  if (it == vec.rend())return -1;
-  return (++it).base() - vec.begin();
-}
-
-template<typename T>
-int findStartOf(const T &value, const std::vector<T> &vec) {
-  if (vec.size() == 0) return -1;
-  auto it = std::find(vec.begin(), vec.end(), value);
-  if (it == vec.end())return -1;
-  return it - vec.begin();
-}
-
-//the ith pos of value to 0
-void RemoveBitValue(int &value, int index) {
-  int bit = 1 << index;
-  int nMark = 0;
-  nMark = (~nMark) ^ bit;
-  value &= nMark;
-}
-
-//2-dim array sum array
-void get2sum(vector<vector<int>> &grid, vector<vector<int>> &sum) {
-  int m = static_cast<int>(grid.size());
-  int n = static_cast<int>(grid[0].size());
-
-  sum.resize(m + 1, vector<int>(n + 1, 0));
-  for (int i = 0; i < m; ++i) {
-    for (int j = 0; j < n; ++j) {
-      sum[i + 1][j + 1] =
-          sum[i + 1][j] + sum[i][j + 1] - sum[i][j] + grid[i][j];
+template<typename T, typename... Args>
+static void sformat(std::ostream &out,
+                    const char *s,
+                    const T &value,
+                    const Args &... args) {
+  while (*s) {
+    if (*s == '{' && *(s + 1) == '}') {
+      out << value;
+      return sformat(out, s + 2, args...);
     }
+    out << *s++;
   }
+  printf("! sformat problem, input: %s\n", s);
+  assert(false && "extra arguments provided to printf");
+  //throw std::runtime_error("extra arguments provided to printf");
 }
 
-//query 2-dim
-//[l,r],[t,d]
-int get2ret(vector<vector<int>> &sum, int l, int r, int t, int d) {
-  return sum[d + 1][r + 1] - sum[d + 1][l] - sum[t][r + 1] + sum[t][r];
-}
 
-//input edge pair
-vector<int> HamiltonPath(vector<vector<int>> &pairs, int n) {
-  vector<bool> visit(n, false);
-
-  // graph
-  unordered_map<int, vector<int>> edges;
-  // in degree,out degree
-  unordered_map<int, int> in_deg, out_deg;
-  for (const auto &p : pairs) {
-    int x = p[0], y = p[1];
-    edges[x].push_back(y);
-    ++in_deg[y];
-    ++out_deg[x];
-  }
-
-  // find start
-  int start = pairs[0][0];
-  for (const auto &x : out_deg) {
-    // out degree-in degree==1 as start
-    if (x.second == in_deg[x.first] + 1) {
-      start = x.first;
-      break;
-    }
-  }
-
-  vector<int> ans;
-
-  function<void(int)> dfs = [&](int u) {
-    visit[u] = true;
-    ans.push_back(u);
-
-    while (!edges[u].empty()) {
-      int v = edges[u].back();
-      edges[u].pop_back();
-      if (visit[v])continue;
-      dfs(v);
-    }
-  };
-
-  dfs(start);
-  return ans;
+template<typename... Args>
+void print(const char *format, const Args &... args) {
+  std::ostringstream stream;
+  sformat(stream, format, args...);
+  fprintf(stdout, (stream.str() + '\n').c_str());
 }
 
 //let 2-dim array to 1-dim array,barrier fill the border
-void fillArrayWithVector(int *after, const vector<vector<int>> &grid,
+void fillArrayWithVector(int *after,
+                         const std::vector<std::vector<int>> &grid,
                          int barrier = 0) {
   int m = static_cast<int>(grid.size());
   int n = static_cast<int>(grid[0].size());
@@ -266,35 +206,20 @@ void fillArrayWithVector(int *after, const vector<vector<int>> &grid,
 
 //split string with c
 std::vector<std::string> SplitStringWith(const std::string &s, char c) {
-  vector<string> ans;
-  istringstream in(s);
-  string token;
-  while (getline(in, token, c)) {
-    ans.push_back(token);
-  }
-  return ans;
-
-//  regex re(to_string(c));
-//  vector<string> a(sregex_token_iterator(s.begin(), s.end(), re, -1),
-//                   std::sregex_token_iterator());
-//  return a;
+  std::regex re("\\" + std::string(1, c));
+  std::vector<std::string>
+      a(std::sregex_token_iterator(s.begin(), s.end(), re, -1),
+        std::sregex_token_iterator());
+  return a;
 }
 
-double cpt(double cur_m,
-           double loss,
-           double down_rate,
-           double limit,
-           double achieve) {
-  //solve (nm+x)*(1+limit)=(cur_m+x+loss)*(1+achieve);
-  //solve (limit-achieve)*x=(cur_m+loss)*(1+achieve)-nm*(1+limit);
-  return
-      ((cur_m + loss) * (1 + achieve) - cur_m * (1 - down_rate) * (1 + limit))
-          / (limit - achieve);
 }
 
+
+#ifdef LOCAL
+//data structure in leetcode
 
 //Definition for singly-linked list
-#ifdef LOCAL
 struct ListNode {
   int val;
   ListNode *next;
@@ -302,9 +227,20 @@ struct ListNode {
   explicit ListNode(int x) : val(x), next(nullptr) {}
   ListNode(int x, ListNode *next) : val(x), next(next) {}
 };
+
+//Definition for a binary tree node.
+struct TreeNode {
+  int val;
+  TreeNode *left;
+  TreeNode *right;
+  TreeNode() : val(0), left(nullptr), right(nullptr) {}
+  explicit TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+  TreeNode(int x, TreeNode *left, TreeNode *right)
+      : val(x), left(left), right(right) {}
+};
 #endif
 
-int g[10000];
+//int g[10000];
 //bool vis[260000];
 
 const int mod = 1e9 + 7;
@@ -312,152 +248,13 @@ const int mod = 1e9 + 7;
 int dir[4][2] = {{-1, 0}, {0, -1}, {0, 1}, {1, 0}};
 //int dir[9] = { -1,0,1, -1,0, 1,-1,0,1 };
 
-
-
-//
-//double cmp(double total,double loss,double down){
-//  return 29.2*loss+30.2*total*down-total;
-//}
-//class Solution {
-// public:
-//  unordered_map<int,int>hash;
-//  int mostFrequent(vector<int>& nums, int key) {
-//    for(int i=1;i<nums.size();++i){
-//      if(nums[i-1]==key){
-//        hash[nums[i]]++;
-//      }
-//    }
-//    int ret=-1,maxid=-1;
-//    for(auto c:hash){
-//      if(c.second>maxid){
-//        ret=c.first;
-//        maxid=c.second;
-//      }
-//    }
-//    return ret;
-//  }
-//};
-
-
-//class Solution {
-// public:
-//  int tr(vector<int>&mapping,int x){
-//    string sx= to_string(x);
-//    for(int i=0;i<sx.size();++i){
-//      sx[i]='0'+mapping[sx[i]-'0'];
-//    }
-//    return stoi(sx);
-//  }
-//  vector<int> sortJumbled(vector<int>& mapping, vector<int>& nums) {
-//    vector<array<int,3>>temp;
-//    for(int i=0;i<nums.size();++i){
-//      temp.push_back({nums[i],i,tr(mapping,nums[i])});
-//    }
-//    sort(temp.begin(),temp.end(),[&](auto a,auto b){
-//      return a[2]==b[2]?a[1]<b[1]:a[2]<b[2];
-//    });
-//    vector<int>ret;
-//    for(auto c:temp)ret.push_back(c[0]);
-//    return ret;
-//  }
-//};
-
-
-//class Solution {
-// public:
-//
-//  unordered_map<int,unordered_set<int>>fathers;
-//  vector<vector<int>> getAncestors(int n, vector<vector<int>>& edges) {
-//
-//    for(auto e:edges){
-//      fathers[e[1]].insert(e[0]);
-//    }
-//    vector<vector<int>>ret(n);
-//    for(int i=0;i<n;++i){
-//      vector<bool>vis(n, false);
-//      queue<int>q;
-//      for(auto c:fathers[i]){
-//        ret[i].push_back(c);
-//        q.push(c);
-//        vis[c]=true;
-//      }
-//      while(!q.empty()){
-//        int t=q.front();q.pop();
-//        for(auto x:fathers[t]){
-//          if(!vis[x]){
-//            q.push(x);
-//            vis[x]=true;
-//            fathers[i].insert(x);
-//            ret[i].push_back(x);
-//          }
-//        }
-//      }
-//      sort_unique(ret[i]);
-//    }
-//    return ret;
-//  }
-//};
-
-class Solution {
- public:
-  int minMovesToMakePalindrome(string s) {
-
-    int n=s.size();
-    int ret=0;
-    vector<int>cnt(26,0);
-    for(auto c:s)cnt[c-'a']++;
-    bool haveodd=false;
-    char oddchar;
-    int oddcharcnt;
-    for(int i=0;i<26;++i){
-      if(cnt[i]%2!=0){
-        haveodd=true;
-        oddchar='a'+i;
-        oddcharcnt=cnt[i];
-      }
-    }
-
-    for(int i=0;i<n/2;++i){
-      char cur=s[i];
-      char temp=cur;
-      if(haveodd&&cur==oddchar&&oddcharcnt==1){
-        ++ret;
-        swap(s[i],s[i+1]);
-        cur=s[i];
-        temp=cur;
-      }else if(haveodd&&cur==oddchar){
-        oddcharcnt-=2;
-      }
-
-      //DBG(temp,cur,i,ret);
-      for(int j=n-1-i;j>=0;--j){
-        if(s[j]==cur){
-          s[j]=temp;
-          break;
-        }
-        swap(temp,s[j]);
-        ++ret;
-        //DBG(j,s[j],temp,ret);
-      }
-      DBG(ret,s);
-    }
-    return ret;
-  }
-};
-
+using namespace std;
 
 #ifdef LOCAL
 signed main() {
 
-  //Solution().movesToStamp("aba","abababa");
-  //DBG(Solution().minimumFinishTime(A, M, numLaps));
-Solution().minMovesToMakePalindrome("skwhhaaunskegmdtutlgtteunmuuludii");
-
   return 0;
 }
-
-
-
 #endif
 
 
