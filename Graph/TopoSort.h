@@ -7,12 +7,11 @@
 #include <bits/stdc++.h>
 
 //edges[i] save the out nodes
-bool TopologicalSorting(const std::vector<std::vector<int>> &edges,
+bool topo_sort(const std::vector<std::vector<int>> &edges,
                         std::vector<int> &idx,
                         int n) {
   std::vector<int> in_degree(n);
   for (int i = 0; i < n; ++i)for (auto e : edges[i])++in_degree[e];
-
   std::queue<int> q; // use priority queue for smallest ans.
   for (int i = 0; i < n; ++i)if (!in_degree[i])q.push(-i);
   int nr = 0;

@@ -7,9 +7,8 @@
 
 #include <bits/stdc++.h>
 
-namespace weighted_matching{
 bool zero(double x) { return fabs(x) < 1e-10; }
-}//weighted_matching
+
 
 double MinCostMatching(const std::vector<std::vector<double>> &cost,
                        std::vector<int> &L,
@@ -29,7 +28,7 @@ double MinCostMatching(const std::vector<std::vector<double>> &cost,
   for (int i = 0; i < n; ++i)
     for (int j = 0; j < n; ++j) {
       if (R[j] != -1) continue;
-      if (weighted_matching::zero(cost[i][j] - u[i] - v[j])) {
+      if (zero(cost[i][j] - u[i] - v[j])) {
         L[i] = j;
         R[j] = i;
         mated++;

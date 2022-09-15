@@ -1,6 +1,8 @@
-//
-// Created by su on 2022/3/12.
-//
+/**
+ * Description: Finds the longest common subsequence.
+ * Time: $O(nm)$ where n and m are the lengths of the sequences.
+ * Memory: $O(nm)$.
+ */
 
 #ifndef CONTEST__LONGEST_COMMON_SUBSEQUENCE_H_
 #define CONTEST__LONGEST_COMMON_SUBSEQUENCE_H_
@@ -8,7 +10,7 @@
 #include <bits/stdc++.h>
 
 template<class T>
-T LongestCommonSubsequence(const T &X, const T &Y) {
+T LCS(const T &X, const T &Y) {
   int a = X.size(), b = Y.size();
   std::vector<std::vector<int>> dp(a + 1, std::vector<int>(b + 1));
   for (int i = 1; i < a + 1; ++i)

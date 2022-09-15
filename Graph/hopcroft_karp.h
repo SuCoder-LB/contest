@@ -6,7 +6,6 @@
 #define CONTEST__HOPCROFT_KARP_H_
 #include <bits/stdc++.h>
 
-namespace hopcroft_karp{
 bool dfs(int a,
          int layer,
          const std::vector<std::vector<int>> &g,
@@ -18,12 +17,10 @@ bool dfs(int a,
   for (auto b : g[a])
     if (B[b] == layer + 1) {
       B[b] = -1;
-      if (btoa[b] == -1 || dfs(btoa[b], layer + 2, g, btoa, A, B))
-        return btoa[b] = a, 1;
+      if (btoa[b] == -1 || dfs(btoa[b], layer + 2, g, btoa, A, B))return btoa[b] = a, 1;
     }
   return 0;
 }
-}// hopcroft_karp
 
 int HopcroftKarp(const std::vector<std::vector<int>> &g,
                  std::vector<int> &btoa) {
@@ -54,8 +51,7 @@ int HopcroftKarp(const std::vector<std::vector<int>> &g,
       cur.swap(next);
     }
     for (int a = 0; a < g.size(); ++a) {
-      if (hopcroft_karp::dfs(a, 0, g, btoa, A, B))
-        ++res;
+      if (dfs(a, 0, g, btoa, A, B))++res;
     }
   }
 }

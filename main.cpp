@@ -1,9 +1,14 @@
 //created by su
 
-#include<bits/stdc++.h>
-
-//using namespace std;
-
+#include <bits/stdc++.h>
+using namespace std;
+#define rep(i, a, b) for(int i = a; i < (b); ++i)
+#define trav(a, x) for(auto& a : x)
+#define all(x) x.begin(), x.end()
+#define sz(x) (int)(x).size()
+typedef long long ll;
+typedef pair<int, int> pii;
+typedef vector<int> vi;
 
 namespace {
 
@@ -179,7 +184,6 @@ static void sformat(std::ostream &out,
   //throw std::runtime_error("extra arguments provided to printf");
 }
 
-
 template<typename... Args>
 void print(const char *format, const Args &... args) {
   std::ostringstream stream;
@@ -215,7 +219,6 @@ std::vector<std::string> SplitStringWith(const std::string &s, char c) {
 
 }
 
-
 #ifdef LOCAL
 //data structure in leetcode
 
@@ -248,13 +251,15 @@ const int mod = 1e9 + 7;
 int dir[4][2] = {{-1, 0}, {0, -1}, {0, 1}, {1, 0}};
 //int dir[9] = { -1,0,1, -1,0, 1,-1,0,1 };
 
-using namespace std;
 
 #ifdef LOCAL
-signed main() {
+
+int main() {
 
   return 0;
 }
+
+
 #endif
 
 

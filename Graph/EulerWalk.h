@@ -10,7 +10,7 @@
 
 //nodes_out,1-dim，point，2-dim edge，array[0] out point id，array[1] edge id
 //n_edges the number of edges，src the start of point，if not ensure a circle，better computer the out degree-in degree=1 point as src
-std::vector<int> EulerPath(std::vector<std::vector<std::array<int, 2>>> &nodes_out,
+std::vector<int> EulerPath(std::vector<std::vector<std::pair<int, int>>> &nodes_out,
                       const std::vector<int> &nodes_n_ins,
                       int n_edges,
                       int src = 0) {
@@ -18,7 +18,7 @@ std::vector<int> EulerPath(std::vector<std::vector<std::array<int, 2>>> &nodes_o
   for (int i = 0; i < nodes_out.size(); ++i)
     c += abs(nodes_n_ins[i] - (int)nodes_out[i].size());
   if (c > 2) return {};
-  std::vector<std::vector<std::array<int, 2>>::iterator> its;
+  std::vector<std::vector<std::pair<int, int>>::iterator> its;
   its.reserve(nodes_out.size());
   for (auto n : nodes_out)its.push_back(n.begin());
   std::vector<bool> eu(n_edges);
@@ -26,13 +26,13 @@ std::vector<int> EulerPath(std::vector<std::vector<std::array<int, 2>>> &nodes_o
   while (!s.empty()) {
     int x = s.back();
     auto &it = its[x], end = nodes_out[x].end();
-    while (it != end && eu[(*it)[1]]) ++it;
+    while (it != end && eu[it->second]) ++it;
     if (it == end) {
       ret.push_back(x);
       s.pop_back();
     } else {
-      s.push_back((*it)[0]);
-      eu[(*it)[1]] = true;
+      s.push_back(it->first);
+      eu[it->second] = true;
     }
   }
   if (ret.size() != n_edges + 1)

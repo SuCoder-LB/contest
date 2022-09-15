@@ -7,7 +7,7 @@
 
 #include <bits/stdc++.h>
 
-struct MinCostMaxFlow {
+struct MCMF {
   const long long INF = std::numeric_limits<long long>::max() / 4;
 
   int n_;
@@ -17,7 +17,7 @@ struct MinCostMaxFlow {
   std::vector<long long> dist_, pi_;
   std::vector<std::pair<int, int>> par_;
 
-  explicit MinCostMaxFlow(int N)
+  explicit MCMF(int N)
       : n_(N),
         ed_(N),
         red_(N),
