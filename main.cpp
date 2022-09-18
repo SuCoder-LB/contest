@@ -160,54 +160,6 @@ std::ostream &show(std::ostream &out, const char *label,
               std::forward<T>(rest)...);
 }
 
-inline void sformat(std::ostream &out, const char *s) {
-  while (*s) {
-    assert(!(*s == '{' && *(s + 1) == '}'));
-    out << *s++;
-  }
-}
-
-template<typename T, typename... Args>
-static void sformat(std::ostream &out,
-                    const char *s,
-                    const T &value,
-                    const Args &... args) {
-  while (*s) {
-    if (*s == '{' && *(s + 1) == '}') {
-      out << value;
-      return sformat(out, s + 2, args...);
-    }
-    out << *s++;
-  }
-  printf("! sformat problem, input: %s\n", s);
-  assert(false && "extra arguments provided to printf");
-  //throw std::runtime_error("extra arguments provided to printf");
-}
-
-template<typename... Args>
-void print(const char *format, const Args &... args) {
-  std::ostringstream stream;
-  sformat(stream, format, args...);
-  fprintf(stdout, (stream.str() + '\n').c_str());
-}
-
-//let 2-dim array to 1-dim array,barrier fill the border
-void fillArrayWithVector(int *after,
-                         const std::vector<std::vector<int>> &grid,
-                         int barrier = 0) {
-  int m = static_cast<int>(grid.size());
-  int n = static_cast<int>(grid[0].size());
-  int cnt = -1;
-  int n2 = n + 2;
-  for (int i = 0; i < n2; ++i)after[++cnt] = barrier;
-  for (int i = 0; i < m; ++i) {
-    after[++cnt] = barrier;
-    for (int j = 0; j < n; ++j) after[++cnt] = grid[i][j];
-    after[++cnt] = barrier;
-  }
-  for (int i = 0; i < n2; ++i) after[++cnt] = barrier;
-}
-
 //split string with c
 std::vector<std::string> SplitStringWith(const std::string &s, char c) {
   std::regex re("\\" + std::string(1, c));
@@ -251,6 +203,43 @@ const int mod = 1e9 + 7;
 int dir[4][2] = {{-1, 0}, {0, -1}, {0, 1}, {1, 0}};
 //int dir[9] = { -1,0,1, -1,0, 1,-1,0,1 };
 
+struct HashInterval {
+  std::vector<long long> ha, pw;
+  long long c_ = INT_MAX, mod_ = INT_MAX;
+ public:
+  explicit HashInterval(std::string &str) : ha(str.size() + 1), pw(ha) {
+    pw[0] = 1;
+    for (int i = 0; i < str.size(); ++i)
+      ha[i + 1] = (ha[i] * c_ + str[i]) % mod_,
+          pw[i + 1] = pw[i] * c_ % mod_;
+  }
+  long long hashInterval(int a, int b) { // hash [a, b)
+    return (ha[b] - ha[a] * pw[b - a] % mod_ + mod_) % mod_;
+  }
+};
+
+
+class Solution {
+ public:
+  vector<int> sumPrefixScores(vector<string> &words) {
+    vector<unordered_map<long long,int>>hs(1000);
+    vector<HashInterval>his;
+    for (int i = 0; i < words.size(); ++i) {
+      HashInterval t(words[i]);
+      for(int j=0;j<words[i].size();++j){
+        hs[j][t.hashInterval(0,j+1)]++;
+      }
+      his.push_back(t);
+    }
+    vector<int> ret(words.size(), 0);
+    for (int i = 0; i < words.size(); ++i) {
+      for(int j=0;j<words[i].size();++j){
+        ret[i]+=hs[j][his[i].hashInterval(0,j+1)];
+      }
+    }
+    return ret;
+  }
+};
 
 #ifdef LOCAL
 
@@ -258,7 +247,6 @@ int main() {
 
   return 0;
 }
-
 
 #endif
 

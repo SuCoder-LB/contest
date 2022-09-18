@@ -21,8 +21,7 @@ struct RMQ {
     jmp.assign(depth, V);
     for (int i = 0; i < depth - 1; ++i)
       for (int j = 0; j < N; ++j)
-        jmp[i + 1][j] = min(jmp[i][j],
-                            jmp[i][std::min(N - 1, j + (1 << i))]);
+        jmp[i + 1][j] = min(jmp[i][j], jmp[i][std::min(N - 1, j + (1 << i))]);
   }
 
   T query(int a, int b) {

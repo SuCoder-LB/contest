@@ -7,17 +7,15 @@
 
 #include <bits/stdc++.h>
 
-
-const int TrieN = 100010;
 class Trie {
  public:
-  int son[TrieN][26];
-  int cnt[TrieN];
+  std::vector<std::vector<int>> son;
+  std::vector<int> cnt;
   int idx;
   /** Initialize your data structure here. */
   Trie() {
-    memset(son, 0, sizeof(son));
-    memset(cnt, 0, sizeof(cnt));
+    son.push_back(std::vector<int>(26));
+    cnt.push_back(0);
     idx = 0;
   }
 
@@ -28,6 +26,10 @@ class Trie {
     for (int i = 0; i < n; ++i) {
       int u = word[i] - 'a';
       if (!son[p][u]) son[p][u] = ++idx;
+      if (idx >= son.size()) {
+        son.push_back(std::vector<int>(26));
+        cnt.push_back(0);
+      }
       p = son[p][u];
     }
     cnt[p]++;  //how many words
@@ -42,7 +44,6 @@ class Trie {
       if (!son[p][u]) return false;
       p = son[p][u];
     }
-
     if (cnt[p] > 0) return true;
     else return false;
   }

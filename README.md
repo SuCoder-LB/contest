@@ -2,10 +2,12 @@
 ## data structure
 + fenwicktree:树状数组
 + fenwicktree2d:二维树状数组模板
-+ laysegmentree：懒标记线段树，区间修改，查询最大值
++ lazysegmentree：懒标记线段树，区间修改，查询最大值,查询和
++ matrix：矩阵类，重载乘号和幂
 + orderstatistictree：可求索引的set
 + rmq：O(1)查询区间最小值
 + segmenttree：单点修改区间查询模板
++ submatrix：二维前缀和模板
 + unionfind：并查集
 ## Geometry
 + lineDistance：点与直线距离
