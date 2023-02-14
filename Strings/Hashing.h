@@ -6,7 +6,7 @@
 #ifndef CONTEST__HASHING_H_
 #define CONTEST__HASHING_H_
 
-#include <bits/extc++.h>
+#include <bits/stdc++.h>
 
 static const long long M = INT_MAX;
 static long long C; // initialized below, avoid hack

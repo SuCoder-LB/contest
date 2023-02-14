@@ -107,7 +107,7 @@ std::ostream &show(std::ostream &out, const char *label,
 }
 
 
-std::vector<std::string> SplitStringWith(const std::string &s, char c) {
+static std::vector<std::string> SSW(const std::string &s, char c) {
   std::regex re("\\" + std::string(1, c));
   std::vector<std::string>
       a(std::sregex_token_iterator(s.begin(), s.end(), re, -1),
@@ -115,6 +115,10 @@ std::vector<std::string> SplitStringWith(const std::string &s, char c) {
   return a;
 }
 
+static std::vector<std::string> SS(const std::string &s) {
+  std::vector<std::string>ans;std::stringstream ss(s);std::string t;
+  while(ss>>t)ans.push_back(t);return ans;
+}
 
 //data structure in leetcode
 

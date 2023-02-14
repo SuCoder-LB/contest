@@ -65,6 +65,19 @@ struct LCA {
     int lca = query(a, b);
     return dist[a] + dist[b] - 2 * dist[lca];
   }
+
+  int find(int cur,int k){
+    if(dist[cur]>k)return 0;
+    int l=0,r=time[cur];
+    while(l<r){
+      int m=(l+r+1)>>1;
+      if(rmq.query(0,m).first<=dist[cur]-k){
+        l=m;
+      }else{
+        r=m-1;
+      }
+    }
+  }
 };
 
 #endif //CONTEST_GRAPH_LCA_H_

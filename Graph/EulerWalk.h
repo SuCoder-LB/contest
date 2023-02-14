@@ -8,10 +8,9 @@
 #include <bits/stdc++.h>
 
 
-//nodes_out,1-dim，point，2-dim edge，array[0] out point id，array[1] edge id
-//n_edges the number of edges，src the start of point，if not ensure a circle，better computer the out degree-in degree=1 point as src
-std::vector<int> EulerPath(std::vector<std::vector<std::pair<int, int>>> &nodes_out,
-                      const std::vector<int> &nodes_n_ins,
+
+std::vector<int> EulerPath(std::vector<std::vector<std::pair<int, int>>> &nodes_out,//dest,edge index
+                      const std::vector<int> &nodes_n_ins,//
                       int n_edges,
                       int src = 0) {
   int c = 0;
@@ -39,6 +38,23 @@ std::vector<int> EulerPath(std::vector<std::vector<std::pair<int, int>>> &nodes_
     ret.clear(); // No Euler cycles/paths.
   // else, non-cycle if ret.front() != ret.back()
   reverse(ret.begin(), ret.end());
+  return ret;
+}
+
+
+std::vector<int> HamiltonPath(std::vector<std::vector<int>> &nodes_out,int src = 0) {
+  std::vector<bool> vis(nodes_out.size());
+  std::vector<int> ret, s = {src};
+  while (!s.empty()) {
+    int x = s.back();s.pop_back();
+    vis[x]=true,ret.push_back(x);
+    while(!nodes_out[x].empty()){
+      int v=nodes_out[x].back();
+      nodes_out[x].pop_back();
+      if(vis[v])continue;
+      s.push_back(v);break;
+    }
+  }
   return ret;
 }
 

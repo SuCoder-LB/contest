@@ -8,7 +8,7 @@
 #ifndef CONTEST_VARIOUS_INTERVALCOVER_H_
 #define CONTEST_VARIOUS_INTERVALCOVER_H_
 
-#include "bits/extc++.h"
+#include "bits/stdc++.h"
 
 template<class T>
 std::vector<int> cover(std::pair<T, T> G, std::vector<std::pair<T, T>> I) {

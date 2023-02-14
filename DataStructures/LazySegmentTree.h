@@ -9,8 +9,8 @@
 #define CONTEST_DATASTRUCTURES_LAZYSEGMENTTREE_H_
 #include "bits/stdc++.h"
 
-const int inf = 1e9;
 struct Node {
+  const int inf = 1e9;
   Node *l = 0, *r = 0;
   int lo, hi, mset = inf, madd = 0, val = -inf;
   Node(int lo, int hi) : lo(lo), hi(hi) {} // Large interval of -inf
@@ -22,6 +22,7 @@ struct Node {
       val = std::max(l->val, r->val);
     } else val = v[lo];
   }
+  //[1..n],,2n,[1..n],[1,2],[3,4],....,[1,4],,
   int query(int L, int R) {
     if (R <= lo || hi <= L) return -inf;
     if (L <= lo && hi <= R) return val;
@@ -58,9 +59,18 @@ struct Node {
     else if (madd)
       l->add(lo, hi, madd), r->add(lo, hi, madd), madd = 0;
   }
+
+  void debug() {
+    for (int i = lo; i < hi; ++i) {
+      std::cout << query(i, i + 1) << " ";
+    }
+    std::cout << "\n";
+  }
+
 };
 
 struct NodeSum {
+  const int inf = 1e9;
   NodeSum *l = 0, *r = 0;
   int lo, hi, mset = 0, madd = 0;
   long long val = 0;
@@ -104,10 +114,17 @@ struct NodeSum {
       l = new NodeSum(lo, mid);
       r = new NodeSum(mid, hi);
     }
-    if (mset != 0)
-      l->set(lo, hi, mset), r->set(lo, hi, mset), mset = 0;
+    if (mset != inf)
+      l->set(lo, hi, mset), r->set(lo, hi, mset), mset = inf;
     else if (madd)
       l->add(lo, hi, madd), r->add(lo, hi, madd), madd = 0;
+  }
+
+  void debug() {
+    for (int i = lo; i < hi; ++i) {
+      std::cout << query(i, i + 1) << " ";
+    }
+    std::cout << "\n";
   }
 };
 #endif //CONTEST_DATASTRUCTURES_LAZYSEGMENTTREE_H_
